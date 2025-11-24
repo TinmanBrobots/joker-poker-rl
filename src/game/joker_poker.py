@@ -1,5 +1,5 @@
-from game.deck import Deck
-from game.poker_hand import PokerHand
+from .deck import Deck
+from .poker_hand import PokerHand
 
 score_map = {
 	'high_card': 0,
@@ -18,20 +18,28 @@ class JokerPoker:
 	def __init__(self):
 		self.deck = Deck()
 		self.hand = []
+		self.deal()
+
+	def get_hand(self):
+		return self.hand
 
 	def deal(self):
 		for _ in range(5):
 			self.hand.append(self.deck.draw())
+		self.hand.sort()
 
 	def redraw(self, action: int):
+		assert 0 <= action < 32, "Invalid action"
 		for i in range(5):
 			if action & (1 << i):
 				self.hand[i] = self.deck.draw()
 			action >>= 1
+		self.hand.sort()
 
 	def score(self):
-		return score_map[PokerHand(self.hand).evaluate()] - 1
+		return score_map[PokerHand(self.hand).evaluate()]
 
 	def reset(self):
-		self.hand = []
 		self.deck.reset()
+		self.hand.clear()
+		self.deal()

@@ -1,6 +1,7 @@
-import collections
+from collections import namedtuple
+import random
 
-Card = collections.namedtuple('Card', ['rank', 'suit'])
+Card = namedtuple('Card', ['rank', 'suit'])
 
 ranks = {
 	2: '2',
@@ -29,7 +30,6 @@ class Deck:
 	def __init__(self):
 		self.cards = []
 		self.reset()
-		self.shuffle()
 
 	def shuffle(self):
 		random.shuffle(self.cards)
